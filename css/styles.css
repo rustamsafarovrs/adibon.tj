@@ -1,0 +1,18 @@
+body {
+
+}
+.adib-view {
+    height: 500px;
+    max-height: 500px;
+}
+.adib-img {
+    width: fit-content;
+    height: 350px;
+}
+.adib-bio {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
