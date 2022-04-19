@@ -21,7 +21,15 @@ require 'config.php';
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<?php
+$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+// set the PDO error mode to exception
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$stmt = $conn->prepare("select * from adib");
+$stmt->execute();
+$menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Adibon</a>
@@ -34,8 +42,16 @@ require 'config.php';
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Асосӣ</a>
                 </li>
-                <li class="nav-item">
-                    <!--                    <a class="nav-link" href="#">Link</a>-->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Руйхат
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <?php foreach ($menuResult as $item) {
+                            echo '<li><a class="dropdown-item" href="details.php?id=' . $item["uuid"] . '">' . $item["name"] . '</a></li>';
+                        } ?>
+                    </ul>
                 </li>
             </ul>
             <form class="d-flex" action="index.php">
@@ -50,56 +66,62 @@ require 'config.php';
 <div class="container-fluid mt-3">
     <div class="row">
         <?php
-        try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            // set the PDO error mode to exception
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            if ($_GET["q"]) {
-                $stmt = $conn->prepare("select * from adib where name like :q or bio like :q");
-                $stmt->execute(["q" => '%' . $_GET["q"] . '%']);
-            } else {
-                $stmt = $conn->prepare("select * from adib");
-                $stmt->execute();
-            }
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if (sizeof($result) == 0) {
-                echo "Not found";
-            }
-            foreach ($result as $item) {
-                ?>
-                <div class="col-4 mt-3">
-                    <div class="card adib-view">
-                        <img src="img/<?php echo $item["img"] ?>"
-                             class="card-img-top img-fluid adib-img me-auto ms-auto"
-                             alt="...">
-                        <div class="card-body">
-                            <h3 class="card-text"><a
-                                        href="details.php?id=<?php echo $item["uuid"] ?>"><?php echo $item["name"] ?></a>
-                            </h3>
-                            <p class="card-text adib-bio"><?php echo substr($item["bio"], 0, 300) . "..." ?></p>
-                        </div>
+        if ($_GET["q"]) {
+            $stmt = $conn->prepare("select * from adib where name like :q or bio like :q");
+            $stmt->execute(["q" => '%' . $_GET["q"] . '%']);
+        } else {
+            $stmt = $conn->prepare("select * from adib");
+            $stmt->execute();
+        }
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (sizeof($result) == 0) {
+            echo "Not found";
+        }
+        foreach ($result as $item) {
+            ?>
+            <div class="col-4 mt-3">
+                <div class="card adib-view">
+                    <img src="img/<?php echo $item["img"] ?>"
+                         class="card-img-top img-fluid adib-img me-auto ms-auto"
+                         alt="...">
+                    <div class="card-body">
+                        <h3 class="card-text"><a
+                                    href="details.php?id=<?php echo $item["uuid"] ?>"><?php echo $item["name"] ?></a>
+                        </h3>
+                        <p class="card-text adib-bio"><?php echo substr($item["bio"], 0, 300) . "..." ?></p>
                     </div>
                 </div>
-                <?php
-            }
-
-
-        } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+            </div>
+            <?php
         }
+
         ?>
 
     </div>
 </div>
 
-<footer class="bg-light text-center text-lg-start mt-5">
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0,0,0,0.03);">
-        © 2022 Copyright:
-        <a class="text-dark" href="/">adibon.tj</a>
+
+<footer class="bg-light mt-5" style="background-color: rgba(0,0,0,0.03);">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8">
+                <!-- Copyright -->
+                <div class="text-start p-3">
+                    © 2022 Copyright:
+                    <a class="text-dark" href="/">adibon.tj</a>,
+                    Khujand
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="text-end p-3">
+                    Кулов Б
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- Copyright -->
 </footer>
+
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script src="js/bootstrap.js"></script>

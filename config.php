@@ -5,6 +5,6 @@
  * (c) 2022 RS DevTeam.
  */
 $servername = "localhost";
-$dbname="adibon";
+$dbname = "adibon";
 $username = "phpstorm";
 $password = "phpstorm";

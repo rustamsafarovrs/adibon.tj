@@ -21,6 +21,13 @@ require 'config.php';
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<?
+$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$stmt = $conn->prepare("select * from adib");
+$stmt->execute();
+$menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Adibon</a>
@@ -33,8 +40,16 @@ require 'config.php';
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Асосӣ</a>
                 </li>
-                <li class="nav-item">
-                    <!--                        <a class="nav-link" href="#">Link</a>-->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Руйхат
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <?php foreach ($menuResult as $item) {
+                            echo '<li><a class="dropdown-item" href="details.php?id=' . $item["uuid"] . '">' . $item["name"] . '</a></li>';
+                        } ?>
+                    </ul>
                 </li>
             </ul>
             <form class="d-flex" action="index.php">
@@ -47,9 +62,6 @@ require 'config.php';
 </nav>
 <?php
 if (isset($_GET["id"])) {
-
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $stmt = $conn->prepare("select * from adib where uuid=:id limit 1");
     $stmt->execute(["id" => $_GET["id"]]);
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -90,14 +102,27 @@ if (isset($_GET["id"])) {
 }
 ?>
 
-<footer class="bg-light text-center text-lg-start mt-5">
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0,0,0,0.03);">
-        © 2022 Copyright:
-        <a class="text-dark" href="/">adibon.tj</a>
+<footer class="bg-light mt-5" style="background-color: rgba(0,0,0,0.03);">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8">
+                <!-- Copyright -->
+                <div class="text-start p-3">
+                    © 2022 Copyright:
+                    <a class="text-dark" href="/">adibon.tj</a>,
+                    Khujand
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="text-end p-3">
+                    Кулов Б
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- Copyright -->
 </footer>
 
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/bootstrap.js"></script>
 </body>
 </html>
