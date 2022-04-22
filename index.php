@@ -53,6 +53,9 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         } ?>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/gallery.php">Расмхо</a>
+                </li>
             </ul>
             <form class="d-flex" action="index.php">
                 <input class="form-control me-2" type="search" name="q" value="<?php echo $_GET['q'] ?>"
@@ -109,7 +112,6 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-
 <footer class="bg-light mt-5" style="background-color: rgba(0,0,0,0.03);">
     <div class="container-fluid">
         <div class="row">
@@ -129,7 +131,6 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </footer>
-
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script src="js/bootstrap.js"></script>

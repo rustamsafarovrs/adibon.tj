@@ -1,10 +1,9 @@
 <?php
 /**
  * @author Rustam Safarov (RS)
- * created 4/17/2022
+ * created 4/22/2022
  * (c) 2022 RS DevTeam.
  */
-
 require 'config.php';
 
 ?>
@@ -18,15 +17,18 @@ require 'config.php';
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Adibon.tj</title>
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/simple-lightbox.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<?
+<?php
 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+// set the PDO error mode to exception
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $stmt = $conn->prepare("select * from adib");
 $stmt->execute();
 $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -52,7 +54,7 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/gallery.php">Расмхо</a>
+                    <a class="nav-link active" aria-current="page" href="/gallery.php">Расмхо</a>
                 </li>
             </ul>
             <form class="d-flex" action="index.php">
@@ -63,47 +65,17 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </nav>
-<?php
-if (isset($_GET["id"])) {
-    $stmt = $conn->prepare("select * from adib where uuid=:id limit 1");
-    $stmt->execute(["id" => $_GET["id"]]);
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if (sizeof($result) != 0) {
-        $item = $result[0];
-        ?>
-        <div class="container mt-3">
-            <div class="row">
-                <div class="col-4 ms-auto me-auto">
-                    <img src="img/<?php echo $item['img'] ?>" class="mw-100" alt="rasm">
-                    <h2 class="text-center">
-                        <?php echo $item["name"] ?>
-                    </h2>
-                    <p class="text-center">
-                        <?php echo $item["years"] ?>
-                    </p>
-                    <?php
-                    ?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p>
-                        <?php
-                        echo $item["bio"]
-                        ?>
-                    </p>
-                </div>
-            </div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="gallery">
+            <?php foreach ($menuResult as $item) {
+                echo '<a href="img/' . $item['img'] . '" class="big col-3 a-img p-2" rel="rel1">
+                    <div style="background-image: url(img/'.$item['img'] .')" class="gallery-img" alt="" title="'.$item['name'].'"></div>
+                </a>';
+            } ?>
         </div>
-
-        <?php
-    } else {
-        echo "Not found";
-    }
-} else {
-    echo "Not found";
-}
-?>
+    </div>
+</div>
 
 <footer class="bg-light mt-5" style="background-color: rgba(0,0,0,0.03);">
     <div class="container-fluid">
@@ -127,5 +99,14 @@ if (isset($_GET["id"])) {
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<script src="js/simple-lightbox.min.js"></script>
+
+<script>
+    var gallery = new SimpleLightbox('.gallery a', {
+        scaleImageToRatio: true,
+
+    });
+</script>
+
 </body>
 </html>
