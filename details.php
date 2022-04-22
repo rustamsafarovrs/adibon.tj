@@ -28,7 +28,7 @@ $stmt = $conn->prepare("select * from adib");
 $stmt->execute();
 $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Adibon</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -55,7 +55,7 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <form class="d-flex" action="index.php">
                 <input class="form-control me-2" type="search" name="q" value="<?php echo $_GET['q'] ?>"
                        placeholder="Ҷустуҷу" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Ҷустуҷу</button>
+                <button class="btn btn-outline-light" type="submit">Ҷустуҷу</button>
             </form>
         </div>
     </div>

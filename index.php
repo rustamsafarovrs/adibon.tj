@@ -30,7 +30,7 @@ $stmt->execute();
 $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Adibon</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -57,12 +57,20 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <form class="d-flex" action="index.php">
                 <input class="form-control me-2" type="search" name="q" value="<?php echo $_GET['q'] ?>"
                        placeholder="Ҷустуҷу" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Ҷустуҷу</button>
+                <button class="btn btn-outline-light" type="submit">Ҷустуҷу</button>
             </form>
         </div>
     </div>
 </nav>
-
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h5 class="w-100 text-center mt-4">
+                Коркарди Веб-саҳифаи муаррифии адибони тоҷик: омода намудани портрети рақамии Дадохон Эгамзод
+            </h5>
+        </div>
+    </div>
+</div>
 <div class="container-fluid mt-3">
     <div class="row">
         <?php
@@ -81,17 +89,17 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $item) {
             ?>
             <div class="col-4 mt-3">
-                <div class="card adib-view">
-                    <img src="img/<?php echo $item["img"] ?>"
-                         class="card-img-top img-fluid adib-img me-auto ms-auto"
-                         alt="...">
-                    <div class="card-body">
-                        <h3 class="card-text"><a
-                                    href="details.php?id=<?php echo $item["uuid"] ?>"><?php echo $item["name"] ?></a>
-                        </h3>
-                        <p class="card-text adib-bio"><?php echo substr($item["bio"], 0, 300) . "..." ?></p>
+                <a class="adib-link" href="details.php?id=<?php echo $item["uuid"] ?>">
+                    <div class="card adib-view">
+                        <div class="card-img-top adib-img"
+                             style="background-image: url('img/<? echo $item['img'] ?>')"></div>
+                        <div class="card-body">
+                            <h3 class="card-text"><?php echo $item["name"] ?>
+                            </h3>
+                            <p class="card-text adib-bio"><?php echo substr($item["bio"], 0, 300) . "..." ?></p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             <?php
         }
