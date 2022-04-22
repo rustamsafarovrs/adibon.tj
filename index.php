@@ -81,15 +81,13 @@ $menuResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $item) {
             ?>
             <div class="col-4 mt-3">
-                <div class="card adib-view">
-                    <img src="img/<?php echo $item["img"] ?>"
-                         class="card-img-top img-fluid adib-img me-auto ms-auto"
-                         alt="...">
+                <div class="card adib-view" style="background-image: url(<?echo 'img/'.$item['img']?>)">
                     <div class="card-body">
                         <h3 class="card-text"><a
                                     href="details.php?id=<?php echo $item["uuid"] ?>"><?php echo $item["name"] ?></a>
                         </h3>
                         <p class="card-text adib-bio"><?php echo substr($item["bio"], 0, 300) . "..." ?></p>
+                        <a href="details.php?id=<?echo $item['uuid']?>" class="btn btn-outline-light">Бештар</a>
                     </div>
                 </div>
             </div>
